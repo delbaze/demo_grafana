@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: shopmetrics_db_demo
+    environment:
+      POSTGRES_DB: shopmetrics
+      POSTGRES_USER: grafana_user
+      POSTGRES_PASSWORD: grafana_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d # un chemin particulier de postgres qui sera injecté au lancement
+      - postgres_data:/var/lib/postgresql/data # je greffe/map le volume au conteneur
+  
+  grafana:
+    image: grafana/grafana
+    container_name: shopmetrics_grafana_demo
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: shopmetrics
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data: # je déclare un volume
+  grafana_data:

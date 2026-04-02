@@ -1,4 +1,6 @@
 version: "3.8"
+
+
 services:
   postgres:
     image: postgres:15
@@ -21,10 +23,21 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: shopmetrics
+      # GF_FEATURE_TOGGLES_ENABLE: newPDFRendering
+      GF_INSTALL_PLUGINS: "marcusolsson-csv-datasource, yesoreyeram-infinity-datasource"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/csv:/var/lib/grafana/csv
     depends_on:
       - postgres
+    
+  csv-server:
+    image: nginx:alpine
+    volumes:
+      - ./grafana/csv:/usr/share/nginx/html
+    ports:
+      - "8080:80"
 
 volumes:
   postgres_data: # je déclare un volume

@@ -1,0 +1,21 @@
+apiVersion: 1
+
+apps:
+  - type: mahendrapaipuri-dashboardreporter-app
+    org_id: 1
+    org_name: Main Org.
+    disabled: false
+    secureJsonData:
+      # Token du service account Admin créé manuellement
+      saToken: votre_TOKEN_ICI
+    jsonData:
+      appUrl: "http://grafana_provisioning:3001"
+      # Port 9223 — c'est le port réellement exposé par chromedp/headless-shell
+      remoteChromeUrl: "ws://chrome:9223"
+      nativeRenderer: false
+      orientation: landscape
+      layout: grid
+      theme: light
+      dashboardMode: full
+      # Augmenter le timeout pour les dashboards avec beaucoup de panels
+      timeout: 120

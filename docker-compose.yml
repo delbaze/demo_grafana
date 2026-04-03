@@ -55,7 +55,7 @@ services:
     ports:
       - "8080:80"
   grafana_provisioning:
-    image: grafana/grafana
+    image: grafana/grafana:11.6.0
     container_name: shopmetrics_grafana_demo_provisioning
     ports:
       - "3001:3000"
@@ -73,10 +73,10 @@ services:
       GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
       GF_SECURITY_ALLOW_EMBEDDING: "true"
     volumes:
-      - grafana_data_provisioning:/var/lib/grafana
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/csv:/var/lib/grafana/csv
+      # - ./grafana/csv:/var/lib/grafana/csv
       - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data_provisioning:/var/lib/grafana
     depends_on:
       - postgres
       - mailpit

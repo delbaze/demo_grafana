@@ -15,6 +15,12 @@ services:
       - ./init:/docker-entrypoint-initdb.d # un chemin particulier de postgres qui sera injecté au lancement
       - postgres_data:/var/lib/postgresql/data # je greffe/map le volume au conteneur
   
+  mailpit:
+    image: axllent/mailpit
+    container_name: shopmetrics_mailpit_demo
+    ports:
+      - "8025:8025"
+      - "1025:1025"
   grafana:
     image: grafana/grafana
     container_name: shopmetrics_grafana_demo
@@ -24,13 +30,23 @@ services:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: shopmetrics
       # GF_FEATURE_TOGGLES_ENABLE: newPDFRendering
-      GF_INSTALL_PLUGINS: "marcusolsson-csv-datasource, yesoreyeram-infinity-datasource"
+      GF_INSTALL_PLUGINS: "marcusolsson-csv-datasource, yesoreyeram-infinity-datasource, volkovlabs-echarts-panel"
+      GF_SMTP_ENABLED: "true"
+      GF_SMTP_HOST: "mailpit:1025"
+      GF_SMTP_FROM_ADDRESS: "grafana@shopmetrics.com"
+      GF_SMTP_FROM_NAME: "Grafana ShopMetrics"
+      GF_SMTP_SKIP_VERIFY: "true"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
+      GF_SECURITY_ALLOW_EMBEDDING: "true"
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/csv:/var/lib/grafana/csv
     depends_on:
       - postgres
+      - mailpit
+      - csv-server
     
   csv-server:
     image: nginx:alpine
@@ -42,3 +58,4 @@ services:
 volumes:
   postgres_data: # je déclare un volume
   grafana_data:
+

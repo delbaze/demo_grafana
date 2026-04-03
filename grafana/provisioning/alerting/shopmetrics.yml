@@ -1,0 +1,196 @@
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: Webhook ShopMetrics
+    receivers:
+      - uid: webhook-shopmetrics
+        type: webhook
+        settings:
+          url: https://webhook.site/3d5c5922-159f-422d-a66e-a2eff01313ea
+
+policies:
+  - orgId: 1
+    receiver: Webhook ShopMetrics
+
+groups:
+    - orgId: 1
+      name: ShopMetrics
+      folder: ShopMetrics
+      interval: 1m
+      rules:
+        - uid: shopmetrics-rule-cmd
+          title: Commandes bloquées depuis plus de 48 h en pending
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: shopmetrics-postgres
+              model:
+                dataset: shopmetrics
+                datasource:
+                    type: grafana-postgresql-datasource
+                    uid: shopmetrics-postgres
+                editorMode: code
+                format: table
+                intervalMs: 1000
+                maxDataPoints: 43200
+                rawQuery: true
+                rawSql: |-
+                    SELECT COUNT(*) as nb_pending
+                    FROM orders
+                    WHERE status = 'pending'
+                      AND created_at < NOW() - interval '48 hours'
+                refId: A
+                sql:
+                    columns:
+                        - parameters: []
+                          type: function
+                    groupBy:
+                        - property:
+                            type: string
+                          type: groupBy
+                    limit: 50
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          keepFiringFor: 1m
+          isPaused: false
+          notification_settings:
+            receiver: Webhook
+        - uid: shopmetrics-cmd-ca
+          title: CA journalier trop faible sur 72h
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: shopmetrics-postgres
+              model:
+                dataset: shopmetrics
+                editorMode: code
+                format: table
+                intervalMs: 1000
+                maxDataPoints: 43200
+                rawQuery: true
+                rawSql: |4-
+                     SELECT COALESCE(SUM(oi.quantity * oi.unit_price), 0) as ca_jour
+                     FROM orders o
+                     JOIN order_items oi ON oi.order_id = o.id
+                     WHERE o.status != 'cancelled'
+                       AND o.created_at >= NOW() - interval '72 hours'
+                refId: A
+                sql:
+                    columns:
+                        - parameters: []
+                          type: function
+                    groupBy:
+                        - property:
+                            type: string
+                          type: groupBy
+                    limit: 50
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 500
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          isPaused: false
+          notification_settings:
+            receiver: Email ShopMetrics

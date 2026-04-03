@@ -9,10 +9,10 @@ datasources:
     secureJsonData:
       password: grafana_pass
     jsonData:
-      sslMode: disable
-    editable: true
+      sslmode: disable
+    editable: false
 
   - name: Infinity
     type: yesoreyeram-infinity-datasource
     uid: shopmetrics-infinity
-    # editable: true
+    editable: false

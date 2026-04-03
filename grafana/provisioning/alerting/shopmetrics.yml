@@ -8,10 +8,23 @@ contactPoints:
         type: webhook
         settings:
           url: https://webhook.site/3d5c5922-159f-422d-a66e-a2eff01313ea
+        disableResolveMessage: false
+
+  - orgId: 1
+    name: Email ShopMetrics
+    receivers:
+      - uid: email-shopmetrics
+        type: email
+        settings:
+          addresses: directeur@shopmetrics.com
+          singleEmail: false
+        disableResolveMessage: false
 
 policies:
   - orgId: 1
     receiver: Webhook ShopMetrics
+
+
 
 groups:
     - orgId: 1
@@ -107,7 +120,7 @@ groups:
           keepFiringFor: 1m
           isPaused: false
           notification_settings:
-            receiver: Webhook
+            receiver: Webhook ShopMetrics
         - uid: shopmetrics-cmd-ca
           title: CA journalier trop faible sur 72h
           condition: C

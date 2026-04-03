@@ -10,7 +10,8 @@ datasources:
       password: grafana_pass
     jsonData:
       sslmode: disable
-    editable: false
+    isDefault: true
+
 
   - name: Infinity
     type: yesoreyeram-infinity-datasource

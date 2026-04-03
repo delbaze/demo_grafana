@@ -73,7 +73,7 @@ services:
       GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
       GF_SECURITY_ALLOW_EMBEDDING: "true"
     volumes:
-      - grafana_data:/var/lib/grafana
+      - grafana_data_provisioning:/var/lib/grafana
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/csv:/var/lib/grafana/csv
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -87,4 +87,5 @@ services:
 volumes:
   postgres_data: # je déclare un volume
   grafana_data:
+  grafana_data_provisioning:
 

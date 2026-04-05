@@ -77,12 +77,23 @@ services:
       # - ./grafana/csv:/var/lib/grafana/csv
       - ./grafana/provisioning:/etc/grafana/provisioning
       - grafana_data_provisioning:/var/lib/grafana
+      - ./grafana/plugins/mahendrapaipuri-dashboardreporter-app:/var/lib/grafana/plugins/mahendrapaipuri-dashboardreporter-app
     depends_on:
       - postgres
       - mailpit
       - csv-server
-    
-
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    container_name: shopmetrics_renderer_2
+    ports:
+      - "8081:8081"
+    environment:
+      BROWSER_FLAG: "--ignore-certificate-errors"
+  chrome:
+    image: chromedp/headless-shell:latest
+    container_name: shopmetrics_chrome_2
+    shm_size: 2G
+    init: true
 
 volumes:
   postgres_data: # je déclare un volume

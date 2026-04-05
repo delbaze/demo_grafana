@@ -66,6 +66,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 3,
   "links": [
     {
       "asDropdown": true,
@@ -78,6 +79,18 @@
       "tooltip": "",
       "type": "dashboards",
       "url": ""
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Exporter en PDF",
+      "tooltip": "",
+      "type": "link",
+      "url": "/api/plugins/mahendrapaipuri-dashboardreporter-app/resources/report?dashUid=shopmetrics-vue-ensemble"
     }
   ],
   "panels": [
@@ -97,9 +110,6 @@
             "cellOptions": {
               "type": "auto"
             },
-            "footer": {
-              "reducers": []
-            },
             "inspect": false
           },
           "links": [],
@@ -108,8 +118,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": 0
+                "color": "green"
               },
               {
                 "color": "red",
@@ -147,9 +156,17 @@
       "id": 22,
       "options": {
         "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true
       },
-      "pluginVersion": "12.4.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "dataset": "shopmetrics",
@@ -450,7 +467,7 @@
         "h": 8,
         "w": 17,
         "x": 0,
-        "y": 38
+        "y": 28
       },
       "id": 17,
       "options": {
@@ -602,7 +619,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 36
       },
       "id": 11,
       "panels": [],
@@ -640,7 +657,7 @@
         "h": 6,
         "w": 6,
         "x": 0,
-        "y": 47
+        "y": 37
       },
       "id": 2,
       "options": {
@@ -723,7 +740,7 @@
         "h": 6,
         "w": 8,
         "x": 6,
-        "y": 47
+        "y": 37
       },
       "id": 1,
       "options": {
@@ -810,7 +827,7 @@
         "h": 6,
         "w": 6,
         "x": 14,
-        "y": 47
+        "y": 37
       },
       "id": 3,
       "options": {
@@ -871,7 +888,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 43
       },
       "id": 12,
       "panels": [],
@@ -943,7 +960,7 @@
         "h": 14,
         "w": 23,
         "x": 0,
-        "y": 54
+        "y": 44
       },
       "id": 10,
       "options": {
@@ -1055,7 +1072,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 68
+        "y": 58
       },
       "id": 9,
       "options": {
@@ -1155,7 +1172,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 76
+        "y": 66
       },
       "id": 4,
       "options": {
@@ -1229,7 +1246,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 74
       },
       "id": 13,
       "panels": [
@@ -1355,7 +1372,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 75
       },
       "id": 14,
       "panels": [],
@@ -1395,7 +1412,7 @@
         "h": 6,
         "w": 9,
         "x": 0,
-        "y": 86
+        "y": 76
       },
       "id": 7,
       "options": {
@@ -1484,7 +1501,7 @@
         "h": 6,
         "w": 9,
         "x": 9,
-        "y": 86
+        "y": 76
       },
       "id": 8,
       "options": {
@@ -1604,7 +1621,7 @@
         "h": 9,
         "w": 18,
         "x": 0,
-        "y": 92
+        "y": 82
       },
       "id": 15,
       "options": {
@@ -1701,7 +1718,7 @@
         "h": 7,
         "w": 18,
         "x": 0,
-        "y": 101
+        "y": 91
       },
       "id": 16,
       "options": {
@@ -1770,7 +1787,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 108
+        "y": 98
       },
       "id": 19,
       "options": {
@@ -1836,7 +1853,7 @@
     }
   ],
   "preload": false,
-  "schemaVersion": 42,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
@@ -1884,7 +1901,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "regexApplyTo": "value",
         "type": "query"
       },
       {
@@ -1933,7 +1949,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "regexApplyTo": "value",
         "type": "query"
       },
       {
@@ -1984,7 +1999,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "regexApplyTo": "value",
         "type": "query"
       }
     ]
@@ -1997,6 +2011,5 @@
   "timezone": "browser",
   "title": "ShopMetrics - Vue d'ensemble démo",
   "uid": "shopmetrics-vue-ensemble",
-  "version": 81,
-  "weekStart": ""
+  "version": 1
 }
